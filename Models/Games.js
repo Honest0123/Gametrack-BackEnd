@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const tareaSchema = new mongoose.Schema({
+const gameSchema = new mongoose.Schema({
     titulo: {type:String, required: true},
     genero:  {type:String,  required: true},
-    descripcion: {type:String, default: ""},
+    descripcion: {type:String, required: true},
     plataforma: {type:String, required: true},
     añoLanzamiento: {type:Number,  required: true},
     desarrollador: {type:String, required:  true},
@@ -12,4 +12,4 @@ const tareaSchema = new mongoose.Schema({
     fechaCreacion: {type: Date, default: Date.now}
 })
 
-export default mongoose.model('Game', tareaSchema)
+export default mongoose.model('GameModel', gameSchema)

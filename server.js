@@ -2,56 +2,28 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import Game from './Models/Games.js'
+import GameModel from './Models/Games.js'
+import ReviewModel from './Models/Review.js'
 
 dotenv.config()
 
-const app = express ()
+const app = express ()   
 const PORT = process.env.PORT
 
 app.use(cors())
 app.use(express.json())
 
 mongoose.connect(process.env.MOGODB_URI)
-    .then(() => console.log('Conectado a Atlas'))
+    .then(() => {console.log('Conectado a Atlas')
+     console.log('Base de datos:', mongoose.connection.db.databaseName)
+    })
     .catch(err => console.error('Error de conxion: ', err))
 
-// POST - Crear un juego
-app.post('/api/Games/Juegos', async (req, res) => {
-    try {
-        const {
-            titulo,
-            genero,
-            plataforma,
-            añoLanzamiento,
-            desarrollador,
-            imagenPortada,
-            descripcion,
-            completado
-        } = req.body
-
-        const nuevoJuego = await Game.create({
-            titulo,
-            genero,
-            plataforma,
-            añoLanzamiento,
-            desarrollador,
-            imagenPortada,
-            descripcion,
-            completado
-        })
-
-        return res.status(201).json(nuevoJuego)
-    } catch (error) {
-        // Errores de validación de Mongoose -> 400
-        return res.status(400).json({ message: error.message })
-    }
-})
 
 // GET - Obtener todos los juegos
 app.get('/api/Games/Juegos', async (req, res) => {
     try {
-        const games = await Game.find()
+        const games = await GameModel.find()
         res.json(games)
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -72,6 +44,48 @@ app.get('/api/Games/Juegos/id/:id', async (req, res) => {
         res.json(game)
     } catch (error) {
         res.status(500).json({ message: error.message })
+    }
+})
+
+// GET - Obtener todas las Reseñas
+app.get('/api/Games/Reviews', async (req, res) => {
+    try {
+        const review = await ReviewModel.find()
+        res.json(review)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+// POST - Crear un juego                             
+app.post('/api/Games/Juegos', async (req, res) => {
+    try {
+        const {
+            titulo,
+            genero,
+            plataforma,
+            añoLanzamiento,
+            desarrollador,
+            imagenPortada,
+            descripcion,
+            completado
+        } = req.body
+
+        const nuevoJuego = await GameModel.create({
+            titulo,
+            genero,
+            plataforma,
+            añoLanzamiento,
+            desarrollador,
+            imagenPortada,
+            descripcion,
+            completado
+        })
+
+        return res.status(201).json(nuevoJuego)
+    } catch (error) {
+        // Errores de validación de Mongoose -> 400
+        return res.status(400).json({ message: error.message })
     }
 })
 
