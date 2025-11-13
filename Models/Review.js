@@ -11,4 +11,4 @@ const reviewSchema = new mongoose.Schema({
     fechaActualizaccion: {type: Date, default: Date.now}
 })
 
-export default mongoose.model('ReviewModel', reviewSchema)
+export default mongoose.model('Review', reviewSchema)

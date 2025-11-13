@@ -2,8 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import GameModel from './Models/Games.js'
-import ReviewModel from './Models/Review.js'
+import Juegos from './Models/Games.js'
+import Review from './Models/Review.js'
 
 dotenv.config()
 
@@ -23,7 +23,7 @@ mongoose.connect(process.env.MOGODB_URI)
 // GET - Obtener todos los juegos
 app.get('/api/Games/Juegos', async (req, res) => {
     try {
-        const games = await GameModel.find()
+        const games = await Juegos.find()
         res.json(games)
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -37,7 +37,7 @@ app.get('/api/Games/Juegos/id/:id', async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: 'ID inválido' })
         }
-        const game = await Game.findById(id)
+        const game = await Juegos.findById(id)
         if (!game) {
             return res.status(404).json({ message: 'Juego no encontrado' })
         }
@@ -50,7 +50,7 @@ app.get('/api/Games/Juegos/id/:id', async (req, res) => {
 // GET - Obtener todas las Reseñas
 app.get('/api/Games/Reviews', async (req, res) => {
     try {
-        const review = await ReviewModel.find()
+        const review = await Review.find()
         res.json(review)
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -71,7 +71,7 @@ app.post('/api/Games/Juegos', async (req, res) => {
             completado
         } = req.body
 
-        const nuevoJuego = await GameModel.create({
+        const nuevoJuego = await Juegos.create({
             titulo,
             genero,
             plataforma,

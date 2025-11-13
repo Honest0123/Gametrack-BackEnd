@@ -12,4 +12,4 @@ const gameSchema = new mongoose.Schema({
     fechaCreacion: {type: Date, default: Date.now}
 })
 
-export default mongoose.model('GameModel', gameSchema)
+export default mongoose.model('Juegos', gameSchema)
