@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
-    juegoId: {type:mongoose.Types.ObjectId, required: true},
+    juegoId: {type: mongoose.Types.ObjectId, ref: 'Game', requiered: true},
     puntuacion: {type:Number, required: true},
     textoReseña: {type:String, requiered: true},
     horasJugadas: {type:Number, requiered: true},

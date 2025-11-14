@@ -111,7 +111,7 @@ app.post('/api/Games/Juegos', async (req, res) => {
 })
 
 // POST - Crear una review                             
-app.post('/api/Games/Review', async (req, res) => {
+app.post('/api/Games/Reviews', async (req, res) => {
     try {
         const {
             juegoId,
@@ -123,7 +123,7 @@ app.post('/api/Games/Review', async (req, res) => {
             fechaActualizaccion
         } = req.body
 
-        const nuevaReseña = await Juegos.create({
+        const nuevaReseña = await Review.create({
             juegoId,
             puntuacion,
             textoReseña,
