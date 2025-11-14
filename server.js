@@ -67,6 +67,8 @@ app.post('/api/Games/Juegos', async (req, res) => {
             añoLanzamiento,
             desarrollador,
             imagenPortada,
+            imagen2,
+            imagen3,
             descripcion,
             completado
         } = req.body
@@ -78,6 +80,8 @@ app.post('/api/Games/Juegos', async (req, res) => {
             añoLanzamiento,
             desarrollador,
             imagenPortada,
+            imagen2,
+            imagen3,
             descripcion,
             completado
         })

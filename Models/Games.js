@@ -8,6 +8,8 @@ const gameSchema = new mongoose.Schema({
     añoLanzamiento: {type:Number,  required: true},
     desarrollador: {type:String, required:  true},
     imagenPortada: {type:String,  required: true},
+    imagen2: {type:String},
+    imagen3: {type:String},
     completado: {type: Boolean, default: false},
     fechaCreacion: {type: Date, default: Date.now}
 })
