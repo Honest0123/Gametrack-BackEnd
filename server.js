@@ -57,6 +57,23 @@ app.get('/api/Games/Reviews', async (req, res) => {
     }
 })
 
+// GET - Obtener una review por ID
+app.get('/api/Games/reviews/id/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'ID inválido' })
+        }
+        const review = await Review.findById(id)
+        if (!review) {
+            return res.status(404).json({ message: 'Juego no encontrado' })
+        }
+        res.json(review)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 // POST - Crear un juego                             
 app.post('/api/Games/Juegos', async (req, res) => {
     try {
@@ -87,6 +104,36 @@ app.post('/api/Games/Juegos', async (req, res) => {
         })
 
         return res.status(201).json(nuevoJuego)
+    } catch (error) {
+        // Errores de validación de Mongoose -> 400
+        return res.status(400).json({ message: error.message })
+    }
+})
+
+// POST - Crear una review                             
+app.post('/api/Games/Review', async (req, res) => {
+    try {
+        const {
+            juegoId,
+            puntuacion,
+            textoReseña,
+            horasJugadas,
+            dificultad,
+            recomendaria,
+            fechaActualizaccion
+        } = req.body
+
+        const nuevaReseña = await Juegos.create({
+            juegoId,
+            puntuacion,
+            textoReseña,
+            horasJugadas,
+            dificultad,
+            recomendaria,
+            fechaActualizaccion
+        })
+
+        return res.status(201).json(nuevaReseña)
     } catch (error) {
         // Errores de validación de Mongoose -> 400
         return res.status(400).json({ message: error.message })
