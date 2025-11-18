@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
-    juegoId: {type: mongoose.Types.ObjectId, ref: 'Game', requiered: true},
+    juegoId: {type: mongoose.Types.ObjectId, ref: 'Game', required: true},
     puntuacion: {type:Number, required: true},
-    textoReseña: {type:String, requiered: true},
-    horasJugadas: {type:Number, requiered: true},
+    textoReseña: {type:String, required: true},
+    horasJugadas: {type:Number, required: true},
     dificultad: {type:String, required: true},
     recomendaria:  {type: Boolean},
     fechaCreacion: {type: Date, default: Date.now},

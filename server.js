@@ -49,8 +49,14 @@ app.get('/api/Games/Juegos/id/:id', async (req, res) => {
 
 // GET - Obtener todas las Reseñas
 app.get('/api/Games/Reviews', async (req, res) => {
+    const {juegoId} = req.query
+
     try {
-        const review = await Review.find()
+        const filter = {}
+        if (juegoId){
+            filter.juegoId = new mongoose.Types.ObjectId(juegoId)
+        }
+        const review = await Review.find(filter)
         res.json(review)
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -139,6 +145,120 @@ app.post('/api/Games/Reviews', async (req, res) => {
         return res.status(400).json({ message: error.message })
     }
 })
+
+//PUT - Actualizar un juego por ID
+app.put('/api/Games/Juegos/id/:id', async (req, res) => {
+    try{
+        const {id} = req.params
+        
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({message: 'ID invalido'})
+        }
+
+        const juegoActualizado = await Juegos.findByIdAndUpdate(
+            id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        )
+        
+        if(!juegoActualizado) {
+            return res.status(404).json({ mesagge: 'Juego no encontrado' })
+        }
+
+        res.json({
+            mesagge: 'Juego actualizado correctamente',
+            juego: juegoActualizado
+        })
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+
+//PUT - Actualizar un review por ID
+app.put('/api/Games/Reviews/id/:id', async (req, res) => {
+    try{
+        const {id} = req.params
+        
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({message: 'ID invalido'})
+        }
+
+        const reviewActualizado = await Review.findByIdAndUpdate(
+            id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        )
+        
+        if(!reviewActualizado) {
+            return res.status(404).json({ mesagge: 'Review no encontrado' })
+        }
+
+        res.json({
+            mesagge: 'Review actualizado correctamente',
+            juego: reviewActualizado
+        })
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+
+//DELETE - Eliminar un juego por ID
+app.delete('api/Games/Juegos/id/:id', async (req, res) =>{
+    try{
+        const {id} = req.params
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'ID invalido' })
+        }
+
+        const juegoEliminado = await Juegos.findByIdAndDelete(id)
+
+        if (!juegoEliminado) {
+            return res.status(404).json({ mesagge: 'Juego no encontrado' })
+        }
+
+        res.json({
+            mesagge: 'Juego eliminado correctamente',
+            juego: juegoEliminado
+        })
+
+    } catch (error) {
+        res.status(500).json({ message: error.mesagge})
+    }
+})
+
+//DELETE - Eliminar un juego por ID
+app.delete('api/Games/Reviews/id/:id', async (req, res) =>{
+    try{
+        const {id} = req.params
+
+    
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'ID invalido' })
+        }
+
+        const reviewEliminado = await Review.findByIdAndDelete(id)
+
+        if (!reviewEliminado) {
+            return res.status(404).json({ mesagge: 'Review no encontrado' })
+        }
+
+        res.json({
+            mesagge: 'Review eliminado correctamente',
+            juego: reviewEliminado
+        })
+
+    } catch (error) {
+        res.status(500).json({ message: error.mesagge})
+    }
+})
+
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`))
 
