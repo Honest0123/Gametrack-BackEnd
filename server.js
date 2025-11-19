@@ -21,14 +21,14 @@ mongoose.connect(process.env.MOGODB_URI)
 
 
 // GET - Obtener todos los juegos
-app.get('/api/Games/Juegos', async (req, res) => {
+app.get('/api/Games/juegos', async (req, res) => {
     try {
         const games = await Juegos.find()
         res.json(games)
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
-})
+})                   
 
 // GET - Obtener un juego por ID
 app.get('/api/Games/Juegos/id/:id', async (req, res) => {
@@ -209,15 +209,16 @@ app.put('/api/Games/Reviews/id/:id', async (req, res) => {
 })
 
 //DELETE - Eliminar un juego por ID
-app.delete('api/Games/Juegos/id/:id', async (req, res) =>{
+app.delete('/api/Games/Juegos/id/:id', async (req, res) => {
     try{
-        const {id} = req.params
+        const {id} = req.params      
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: 'ID invalido' })
         }
 
-        const juegoEliminado = await Juegos.findByIdAndDelete(id)
+        const juegoEliminado = await Juegos.findByIdAndDelete("id")
+
 
         if (!juegoEliminado) {
             return res.status(404).json({ mesagge: 'Juego no encontrado' })
@@ -233,8 +234,8 @@ app.delete('api/Games/Juegos/id/:id', async (req, res) =>{
     }
 })
 
-//DELETE - Eliminar un juego por ID
-app.delete('api/Games/Reviews/id/:id', async (req, res) =>{
+//DELETE - Eliminar un review por ID
+app.delete('/api/Games/Reviews/id/:id', async (req, res) =>{
     try{
         const {id} = req.params
 
@@ -261,7 +262,3 @@ app.delete('api/Games/Reviews/id/:id', async (req, res) =>{
 
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`))
-
-
-
-
