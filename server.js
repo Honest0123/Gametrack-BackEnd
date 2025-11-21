@@ -22,8 +22,14 @@ mongoose.connect(process.env.MOGODB_URI)
 
 // GET - Obtener todos los juegos
 app.get('/api/Games/juegos', async (req, res) => {
+    const {genero} = req.query
+    
     try {
-        const games = await Juegos.find()
+        const filter = {}
+        if (genero){
+            filter.genero = genero
+        }
+        const games = await Juegos.find(filter)
         res.json(games)
     } catch (error) {
         res.status(500).json({ message: error.message })
