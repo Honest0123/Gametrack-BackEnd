@@ -217,7 +217,7 @@ app.delete('/api/Games/Juegos/id/:id', async (req, res) => {
             return res.status(400).json({ message: 'ID invalido' })
         }
 
-        const juegoEliminado = await Juegos.findByIdAndDelete("id")
+        const juegoEliminado = await Juegos.findByIdAndDelete(id)
 
 
         if (!juegoEliminado) {
