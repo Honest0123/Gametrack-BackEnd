@@ -25,13 +25,19 @@ app.get('/api/Games/juegos', async (req, res) => {
     const {genero} = req.query
     
     try {
-        const filter = {}
+        let juegos = await Juegos.find()
+
         if (genero){
-            filter.genero = genero
+            juegos = juegos.filter(juego => {
+                const generoJuego = juego.genero.split(/[,]+/);
+
+                const generosLimpios = generoJuego.map(g => g.trim().toLowerCase());
+
+                return generosLimpios.includes(genero.toLowerCase())
+            })};
+            res.json(juegos)
         }
-        const games = await Juegos.find(filter)
-        res.json(games)
-    } catch (error) {
+         catch (error) {
         res.status(500).json({ message: error.message })
     }
 })                   
