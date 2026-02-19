@@ -13,7 +13,17 @@ const PORT = process.env.PORT
 app.use(cors())
 app.use(express.json())
 
-mongoose.connect(process.env.MOGODB_URI)
+
+// Permitir solo tu frontend
+app.use(cors({ origin: "https://honest0123.github.io" }));
+
+app.get("/api/data", (req, res) => {
+    res.json({ message: "Hola desde backend real!" });
+});
+
+app.listen(5000, () => console.log("Backend corriendo en puerto 5000"));
+
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => {console.log('Conectado a Atlas')
      console.log('Base de datos:', mongoose.connection.db.databaseName)
     })
